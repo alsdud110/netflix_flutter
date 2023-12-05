@@ -18,8 +18,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const IndexedStack(
-        children: [
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: const [
           HomeScreen(),
           ComingScreen(),
           ContentsListScreen(),
