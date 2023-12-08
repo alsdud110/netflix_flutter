@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:netflix_flutter/screens/components/label_icon.dart';
 import 'package:netflix_flutter/screens/components/play_button.dart';
+import 'package:netflix_flutter/screens/components/small_sub_text.dart';
 import 'package:netflix_flutter/screens/home/components/poster.dart';
 import 'package:netflix_flutter/screens/home/components/rank_poster.dart';
 
@@ -131,35 +133,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: (appSize.height * 0.6),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "오늘 한국에서 콘텐스 순위 1위",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            LabelIcon(icon: Icons.add, label: "내가 찜한 콘텐츠"),
-                            PlayButton(
-                              width: 80,
-                            ),
-                            LabelIcon(
-                              icon: Icons.info_outline,
-                              label: "정보",
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                      ],
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: _buildInfoBottomSheet,
+                      );
+                    },
+                    child: SizedBox(
+                      height: (appSize.height * 0.6),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "오늘 한국에서 콘텐스 순위 1위",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              LabelIcon(icon: Icons.add, label: "내가 찜한 콘텐츠"),
+                              PlayButton(
+                                width: 80,
+                              ),
+                              LabelIcon(
+                                icon: Icons.info_outline,
+                                label: "정보",
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -255,6 +266,146 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoBottomSheet(BuildContext context) {
+    return Wrap(
+      // 안의 내용만큼만 크기를 차지하도록 하려면 Wrap으로 감싸줘라 // Wrap 은 children이다
+      children: [
+        Stack(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                color: Color(0xFF2B2B2B),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: const Image(
+                              image: AssetImage(
+                                  "assets/images/big_buck_bunny_poster.jpg"),
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 140,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "빅 벅 버니",
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                                Row(
+                                  children: [
+                                    SmallSubText(text: "2008"),
+                                    SizedBox(width: 10.0),
+                                    SmallSubText(text: "15+"),
+                                    SizedBox(width: 10.0),
+                                    SmallSubText(text: "시즌 1개"),
+                                  ],
+                                ),
+                                SizedBox(height: 8.0),
+                                Text("버니가 좋아하는 나비들 중 2마리가 죽고 "
+                                    "버니 자신에게 공격이 오자 "
+                                    "버니는 온순한 자연을 뒤로 하고 "
+                                    "2마리의 나비로 인해 복수할 계획들을 치밀히 세운다.")
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 12),
+                      child: Row(
+                        children: [
+                          PlayButton(
+                            width: 155,
+                          ),
+                          Spacer(),
+                          LabelIcon(
+                            icon: FontAwesomeIcons.download,
+                            label: "저장",
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                          Spacer(),
+                          LabelIcon(
+                            icon: FontAwesomeIcons.playCircle,
+                            label: "미리보기",
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      height: 8,
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {},
+                      child: const SizedBox(
+                        height: 38,
+                        child: Row(
+                          children: [
+                            Icon(Icons.info_outline_rounded),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "회차 및 상세정보",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Spacer(),
+                            Icon(
+                              FontAwesomeIcons.chevronRight,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              right: 15,
+              top: 15,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: const Color(0xFF525252),
+                  ),
+                  child: const Icon(FontAwesomeIcons.times),
+                ),
+              ),
+            )
+          ],
         ),
       ],
     );
